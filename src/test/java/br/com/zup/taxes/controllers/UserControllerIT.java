@@ -48,7 +48,7 @@ class UserControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Usuário já cadastrado."));
+                .andExpect(jsonPath("$.mensagem").value("Usuário já cadastrado."));
 
     }
 
@@ -58,13 +58,13 @@ class UserControllerIT extends BaseIT {
             {
                 "userName": "test_user",
                 "password": "12345",
-                "role": "NEW_ROLE"
+                "role": "ROLE_NEW"
             }
         """;
         mockMvc.perform(post("/usuario/registrar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Papel não cadastrado na base."));
+                .andExpect(jsonPath("$.mensagem").value("Papel não cadastrado na base."));
     }
 }

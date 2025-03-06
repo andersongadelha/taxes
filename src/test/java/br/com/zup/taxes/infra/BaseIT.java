@@ -25,7 +25,7 @@ public abstract class BaseIT {
         if (!userRepository.existsByUserName("testUser")) {
             RegisterUserDto user = new RegisterUserDto();
             user.setUserName("testUser");
-            user.setRole(RoleEnum.ADMIN);
+            user.setRole(RoleEnum.ROLE_ADMIN);
             user.setPassword(passwordEncoder.encode("testPassword"));
 
             userRepository.save(user);

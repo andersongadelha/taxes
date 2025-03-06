@@ -14,8 +14,8 @@ public class DataInitializer {
 
     @PostConstruct
     public void init() {
-        createRoleIfNotFound("ADMIN");
-        createRoleIfNotFound("USER");
+        createRoleIfNotFound("ROLE_ADMIN");
+        createRoleIfNotFound("ROLE_USER");
     }
 
     private void createRoleIfNotFound(String roleName) {
