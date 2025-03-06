@@ -21,12 +21,12 @@ class UserControllerIT extends BaseIT {
     @Test
     public void mustRegisterUserSuccessfully() throws Exception {
         String requestBody = """
-            {
-                "userName": "test_user",
-                "password": "12345",
-                "role": "ADMIN"
-            }
-        """;
+                    {
+                        "userName": "test_user",
+                        "password": "12345",
+                        "role": "ROLE_ADMIN"
+                    }
+                """;
         mockMvc.perform(post("/usuario/registrar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -38,12 +38,12 @@ class UserControllerIT extends BaseIT {
     @Test
     public void shouldReturnBadRequest_userRegistered() throws Exception {
         String requestBody = """
-            {
-                "userName": "testUser",
-                "password": "12345",
-                "role": "ADMIN"
-            }
-        """;
+                    {
+                        "userName": "testUser",
+                        "password": "12345",
+                        "role": "ROLE_ADMIN"
+                    }
+                """;
         mockMvc.perform(post("/usuario/registrar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
@@ -55,16 +55,47 @@ class UserControllerIT extends BaseIT {
     @Test
     public void shouldReturnBadRequest_roleNotFound() throws Exception {
         String requestBody = """
-            {
-                "userName": "test_user",
-                "password": "12345",
-                "role": "ROLE_NEW"
-            }
-        """;
+                    {
+                        "userName": "test_user",
+                        "password": "12345",
+                        "role": "ROLE_NEW"
+                    }
+                """;
         mockMvc.perform(post("/usuario/registrar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.mensagem").value("Papel não cadastrado na base."));
+    }
+
+    @Test
+    public void mustLoginSuccessfully() throws Exception {
+        String requestBody = """
+                    {
+                        "userName": "testUser",
+                        "password": "testPassword"
+                    }
+                """;
+        mockMvc.perform(post("/usuario/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").isNotEmpty());
+    }
+
+    @Test
+    public void shouldReturnUnathorized_BadCredentials() throws Exception {
+        String requestBody = """
+                    {
+                        "userName": "testUser",
+                        "password": "12345"
+                    }
+                """;
+        mockMvc.perform(post("/usuario/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
+
     }
 }

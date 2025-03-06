@@ -26,7 +26,7 @@ public class SecurityConfig {
 
     private UserDetailsService userDetailsService;
 
-    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     private JwtAuthenticationFilter authenticationFilter;
 
@@ -46,7 +46,7 @@ public class SecurityConfig {
                 }).httpBasic(Customizer.withDefaults());
 
         http.exceptionHandling( exception -> exception
-                .authenticationEntryPoint(authenticationEntryPoint));
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint));
 
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
