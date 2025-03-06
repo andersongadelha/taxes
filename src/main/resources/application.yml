@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: authenticator
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/taxes}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:admin123}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
