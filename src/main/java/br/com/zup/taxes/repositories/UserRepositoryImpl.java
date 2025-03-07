@@ -3,7 +3,7 @@ package br.com.zup.taxes.repositories;
 import br.com.zup.taxes.controllers.dto.RegisterUserDto;
 import br.com.zup.taxes.controllers.dto.ResponseRegisterUserDto;
 import br.com.zup.taxes.controllers.dto.RoleEnum;
-import br.com.zup.taxes.exceptions.RegisteredUserException;
+import br.com.zup.taxes.controllers.dto.UserDto;
 import br.com.zup.taxes.exceptions.RoleNotFoundException;
 import br.com.zup.taxes.models.Role;
 import br.com.zup.taxes.models.User;
@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         return ResponseRegisterUserDto.builder()
                 .id(userSaved.getId())
-                .username(userSaved.getUserName())
+                .userName(userSaved.getUserName())
                 .role(RoleEnum.fromString(userSaved.getRole().getName()))
                 .build();
     }
@@ -40,7 +40,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByUserName(String userName) {
-        return userJpaRepository.findByUserName(userName);
+    public UserDto findByUserName(String userName) {
+        User user = userJpaRepository.findByUserName(userName);
+
+        return UserDto.builder()
+                .id(user.getId())
+                .userName(user.getUserName())
+                .password(user.getPassword())
+                .role(user.getRole())
+                .build();
     }
 }

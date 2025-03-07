@@ -10,4 +10,9 @@ class TaxesApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void testMain() {
+		TaxesApplication.main(new String[] {});
+	}
+
 }

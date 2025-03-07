@@ -1,6 +1,6 @@
 package br.com.zup.taxes.services;
 
-import br.com.zup.taxes.models.User;
+import br.com.zup.taxes.controllers.dto.UserDto;
 import br.com.zup.taxes.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +22,7 @@ public class CustomUserDatailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUserName(username);
+        UserDto user = userRepository.findByUserName(username);
 
         String role = user.getRole().getName();
 

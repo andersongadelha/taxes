@@ -1,6 +1,5 @@
 package br.com.zup.taxes.infra.jwt;
 
-import br.com.zup.taxes.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -68,14 +67,6 @@ public class JwtTokenProvider {
 
     }
 
-    public Claims getClaimsFromToken(String token) {
-        return Jwts.parser()
-                .verifyWith((SecretKey) key())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
-
     public UsernamePasswordAuthenticationToken getAuthentication(String token) {
         Claims claims = Jwts.parser()
                 .verifyWith((SecretKey) key())
@@ -95,18 +86,4 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
     }
 
-    public String generateTokenFromUser(User user) {
-        Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
-
-        String authorities = user.getRole().getName();
-
-        return Jwts.builder()
-                .subject(user.getUserName())
-                .issuedAt(new Date())
-                .expiration(expireDate)
-                .claim("roles", authorities)
-                .signWith(SignatureAlgorithm.HS256, key())
-                .compact();
-    }
 }

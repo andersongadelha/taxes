@@ -17,9 +17,9 @@ import org.springframework.security.web.SecurityFilterChain;
 class SecurityConfigTest {
     @Mock
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
-
     @Mock
     private JwtAuthenticationFilter authenticationFilter;
+
     @Test
     void passwordEncoderBeanShouldBeBCryptPasswordEncoder() {
         SecurityConfig securityConfig = new SecurityConfig(null, null, null);
