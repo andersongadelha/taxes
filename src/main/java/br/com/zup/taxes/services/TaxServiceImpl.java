@@ -6,6 +6,8 @@ import br.com.zup.taxes.repositories.TaxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TaxServiceImpl implements TaxService {
@@ -15,5 +17,15 @@ public class TaxServiceImpl implements TaxService {
     @Override
     public TaxResponseDto register(TaxDto taxDto) {
         return taxRepository.register(taxDto);
+    }
+
+    @Override
+    public List<TaxResponseDto> findAll() {
+        return taxRepository.findAll();
+    }
+
+    @Override
+    public TaxResponseDto findById(Long id) {
+        return taxRepository.findById(id);
     }
 }

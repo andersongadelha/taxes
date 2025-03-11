@@ -2,6 +2,8 @@ package br.com.zup.taxes.controllers;
 
 import br.com.zup.taxes.infra.BaseIT;
 import br.com.zup.taxes.infra.jwt.JwtTestUtil;
+import com.jayway.jsonpath.JsonPath;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +11,42 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
-class TaxControllerTest extends BaseIT {
+class TaxControllerIT extends BaseIT {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private JwtTestUtil jwtTestUtil;
+    private Long id;
 
+    @BeforeEach
+    public void init() throws Exception {
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
+        String requestBody = """
+            {
+                "name": "Tax Name",
+                "description": "Tax Description",
+                "aliquot": 10.0
+            }
+            """;
+
+        MvcResult result = mockMvc.perform(post("/impostos/tipos")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        String responseBody = result.getResponse().getContentAsString();
+        id = JsonPath.parse(responseBody).read("$.id", Long.class);
+    }
 
 
     @Test
@@ -29,9 +55,9 @@ class TaxControllerTest extends BaseIT {
         String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "name": "Tax",
+                    "description": "Tax description for test",
+                    "aliquot": 15.0
                 }
                 """;
 
@@ -41,9 +67,9 @@ class TaxControllerTest extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Tax Name"))
-                .andExpect(jsonPath("$.description").value("Tax Description"))
-                .andExpect(jsonPath("$.aliquot").value(10.0));
+                .andExpect(jsonPath("$.name").value("Tax"))
+                .andExpect(jsonPath("$.description").value("Tax description for test"))
+                .andExpect(jsonPath("$.aliquot").value(15.0));
     }
 
     @Test
@@ -103,7 +129,57 @@ class TaxControllerTest extends BaseIT {
                         .content(requestBody))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
+    }
 
+    @Test
+    public void shouldReturnAllTaxTypesSuccessfully_withAdminRole() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
 
+        // Act & Assert
+        mockMvc.perform(get("/impostos/tipos")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isNotEmpty());
+    }
+
+    @Test
+    public void shouldReturnTaxTypeByIdSuccessfully_withAdminRole() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
+        Long taxId = id;
+
+        // Act & Assert
+        mockMvc.perform(get("/impostos/tipos/{id}", taxId)
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(id))
+                .andExpect(jsonPath("$.name").value("Tax Name"))
+                .andExpect(jsonPath("$.description").value("Tax Description"))
+                .andExpect(jsonPath("$.aliquot").value(10.0));
+    }
+
+    @Test
+    public void shouldReturnNotFound_whenTaxTypeDoesNotExist_withAdminRole() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
+        Long taxId = 999L;
+
+        // Act & Assert
+        mockMvc.perform(get("/impostos/tipos/{id}", taxId)
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.mensagem").value("Imposto não cadastrado na base."));
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenNoTokenProvided_forFindAll() throws Exception {
+        // Act & Assert
+        mockMvc.perform(get("/impostos/tipos")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
     }
 }
