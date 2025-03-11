@@ -64,7 +64,7 @@ class JwtTokenProviderTest {
         String invalidToken = "invalid.token.value";
 
         // Act & Assert
-        assertThrows(Exception.class, () -> jwtTokenProvider.validateToken(invalidToken));
+        assertFalse(jwtTokenProvider.validateToken(invalidToken));
     }
 
     @Test

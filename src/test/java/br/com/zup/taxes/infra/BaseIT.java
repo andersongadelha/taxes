@@ -21,11 +21,15 @@ public abstract class BaseIT {
 
     @BeforeEach
     public void setUp() {
+        createUser("testUserAdmin", RoleEnum.ROLE_ADMIN);
+        createUser("testUser", RoleEnum.ROLE_USER);
+    }
 
-        if (!userRepository.existsByUserName("testUser")) {
+    private void createUser(String name, RoleEnum role) {
+        if (!userRepository.existsByUserName(name)) {
             RegisterUserDto user = new RegisterUserDto();
-            user.setUserName("testUser");
-            user.setRole(RoleEnum.ROLE_ADMIN);
+            user.setUserName(name);
+            user.setRole(role);
             user.setPassword(passwordEncoder.encode("testPassword"));
 
             userRepository.save(user);
