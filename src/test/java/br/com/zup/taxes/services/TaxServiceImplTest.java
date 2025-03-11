@@ -122,4 +122,16 @@ class TaxServiceImplTest {
         assertEquals("Imposto não cadastrado na base.", exception.getMessage());
         verify(taxRepository, times(1)).findById(taxId);
     }
+
+    @Test
+    void shouldDeleteTaxSuccessfully() {
+        // Arrange
+        Long taxId = 1L;
+
+        // Act
+        taxService.deleteById(taxId);
+
+        // Assert
+        verify(taxRepository, times(1)).deleteById(taxId);
+    }
 }

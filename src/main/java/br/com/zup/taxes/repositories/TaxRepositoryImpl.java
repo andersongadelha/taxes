@@ -51,4 +51,9 @@ public class TaxRepositoryImpl implements TaxRepository {
                 .aliquot(tax.getAliquot())
                 .build();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        taxJpaRepository.deleteById(id);
+    }
 }

@@ -9,4 +9,5 @@ public interface TaxRepository {
     TaxResponseDto register(TaxDto taxDto);
     List<TaxResponseDto> findAll();
     TaxResponseDto findById(Long id);
+    void deleteById(Long id);
 }

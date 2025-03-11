@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -181,5 +182,56 @@ class TaxControllerIT extends BaseIT {
         mockMvc.perform(get("/impostos/tipos")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldDeleteTaxSuccessfully_withAdminRole() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
+        Long taxId = id;
+
+        // Act & Assert
+        mockMvc.perform(delete("/impostos/tipos/{id}", taxId)
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldReturnForbidden_whenUserRoleTriesToDelete() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUser", "ROLE_USER");
+        Long taxId = id;
+
+        // Act & Assert
+        mockMvc.perform(delete("/impostos/tipos/{id}", taxId)
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenNoTokenProvided_forDelete() throws Exception {
+        // Arrange
+        Long taxId = id;
+
+        // Act & Assert
+        mockMvc.perform(delete("/impostos/tipos/{id}", taxId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenTokenIsInvalid_forDelete() throws Exception {
+        // Arrange
+        String invalidToken = jwtTestUtil.generateInvalidToken();
+        Long taxId = id;
+
+        // Act & Assert
+        mockMvc.perform(delete("/impostos/tipos/{id}", taxId)
+                        .header("Authorization", "Bearer " + invalidToken)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
     }
 }

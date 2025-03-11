@@ -28,4 +28,9 @@ public class TaxServiceImpl implements TaxService {
     public TaxResponseDto findById(Long id) {
         return taxRepository.findById(id);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        taxRepository.deleteById(id);
+    }
 }

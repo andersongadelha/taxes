@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -123,5 +125,17 @@ class TaxRepositoryImplTest {
         // Act & Assert
         TaxNotFoundException exception = assertThrows(TaxNotFoundException.class, () -> taxRepositoryImpl.findById(taxId));
         assertEquals("Imposto não cadastrado na base.", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteById_ShouldDeleteTaxSuccessfully() {
+        // Arrange
+        Long taxId = 1L;
+
+        // Act
+        taxRepositoryImpl.deleteById(taxId);
+
+        // Assert
+        verify(taxJpaRepository, times(1)).deleteById(taxId);
     }
 }
