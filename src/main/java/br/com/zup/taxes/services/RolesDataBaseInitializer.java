@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DataInitializer {
+public class RolesDataBaseInitializer {
 
     private final RoleRepository roleRepository;
 

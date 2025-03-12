@@ -19,6 +19,8 @@ class SecurityConfigTest {
     private JwtAuthenticationEntryPoint authenticationEntryPoint;
     @Mock
     private JwtAuthenticationFilter authenticationFilter;
+    @Mock
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Test
     void passwordEncoderBeanShouldBeBCryptPasswordEncoder() {
@@ -31,7 +33,7 @@ class SecurityConfigTest {
 
     @Test
     void securityFilterChainShouldBeConfigured() throws Exception {
-        SecurityConfig securityConfig = new SecurityConfig(null, authenticationEntryPoint, authenticationFilter);
+        SecurityConfig securityConfig = new SecurityConfig(authenticationEntryPoint, authenticationFilter, customAccessDeniedHandler);
 
         HttpSecurity httpSecurity = mock(HttpSecurity.class, RETURNS_DEEP_STUBS);
 

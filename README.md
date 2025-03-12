@@ -43,6 +43,9 @@ Siga os passos abaixo para rodar a aplicação localmente:
 
 5. **Acesso á documentação Swagger**:
    - A documentação swagger estará disponível em: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+   - Registrar um usuário.
+   - Fazer login com o usuário registrado na base e copiar o JWT retornado.
+   - Autenticar pelo swagger usando o JWT no botão Authorize e colar o valor do JWT.
 
 ## 🧪 Como Rodar os Testes e Gerar Relatórios de Cobertura
 

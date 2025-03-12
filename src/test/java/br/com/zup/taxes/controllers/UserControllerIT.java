@@ -22,7 +22,7 @@ class UserControllerIT extends BaseIT {
     public void mustRegisterUserSuccessfully() throws Exception {
         String requestBody = """
                     {
-                        "userName": "test_user",
+                        "userName": "test_userAdmin",
                         "password": "12345",
                         "role": "ROLE_ADMIN"
                     }
@@ -31,7 +31,7 @@ class UserControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.usuario").value("test_user"));
+                .andExpect(jsonPath("$.usuario").value("test_userAdmin"));
 
     }
 
@@ -39,7 +39,7 @@ class UserControllerIT extends BaseIT {
     public void shouldReturnBadRequest_userRegistered() throws Exception {
         String requestBody = """
                     {
-                        "userName": "testUser",
+                        "userName": "testUserAdmin",
                         "password": "12345",
                         "role": "ROLE_ADMIN"
                     }
@@ -56,7 +56,7 @@ class UserControllerIT extends BaseIT {
     public void shouldReturnBadRequest_roleNotFound() throws Exception {
         String requestBody = """
                     {
-                        "userName": "test_user",
+                        "userName": "test_userAdmin",
                         "password": "12345",
                         "role": "ROLE_NEW"
                     }
@@ -72,7 +72,7 @@ class UserControllerIT extends BaseIT {
     public void mustLoginSuccessfully() throws Exception {
         String requestBody = """
                     {
-                        "userName": "testUser",
+                        "userName": "testUserAdmin",
                         "password": "testPassword"
                     }
                 """;
@@ -87,7 +87,7 @@ class UserControllerIT extends BaseIT {
     public void shouldReturnUnathorized_BadCredentials() throws Exception {
         String requestBody = """
                     {
-                        "userName": "testUser",
+                        "userName": "testUserAdmin",
                         "password": "12345"
                     }
                 """;
