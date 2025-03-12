@@ -1,4 +1,4 @@
-package br.com.zup.taxes.controllers.dto;
+package br.com.zup.taxes.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

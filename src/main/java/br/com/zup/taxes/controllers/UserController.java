@@ -1,10 +1,10 @@
 package br.com.zup.taxes.controllers;
 
 
-import br.com.zup.taxes.controllers.dto.AuthResponseDto;
-import br.com.zup.taxes.controllers.dto.LoginDto;
-import br.com.zup.taxes.controllers.dto.RegisterUserDto;
-import br.com.zup.taxes.controllers.dto.ResponseRegisterUserDto;
+import br.com.zup.taxes.dtos.AuthResponseDto;
+import br.com.zup.taxes.dtos.LoginDto;
+import br.com.zup.taxes.dtos.RegisterUserDto;
+import br.com.zup.taxes.dtos.ResponseRegisterUserDto;
 import br.com.zup.taxes.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

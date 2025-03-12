@@ -1,8 +1,8 @@
 package br.com.zup.taxes.repositories;
 
-import br.com.zup.taxes.controllers.dto.RegisterUserDto;
-import br.com.zup.taxes.controllers.dto.ResponseRegisterUserDto;
-import br.com.zup.taxes.controllers.dto.UserDto;
+import br.com.zup.taxes.dtos.RegisterUserDto;
+import br.com.zup.taxes.dtos.ResponseRegisterUserDto;
+import br.com.zup.taxes.dtos.UserDto;
 
 public interface UserRepository {
     ResponseRegisterUserDto save(RegisterUserDto userDto);

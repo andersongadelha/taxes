@@ -1,7 +1,7 @@
 package br.com.zup.taxes.services;
 
-import br.com.zup.taxes.controllers.dto.TaxDto;
-import br.com.zup.taxes.controllers.dto.TaxResponseDto;
+import br.com.zup.taxes.dtos.TaxDto;
+import br.com.zup.taxes.dtos.TaxResponseDto;
 import br.com.zup.taxes.exceptions.TaxNotFoundException;
 import br.com.zup.taxes.repositories.TaxRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;

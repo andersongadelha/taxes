@@ -1,8 +1,8 @@
 package br.com.zup.taxes.infra;
 
 
-import br.com.zup.taxes.controllers.dto.RegisterUserDto;
-import br.com.zup.taxes.controllers.dto.RoleEnum;
+import br.com.zup.taxes.dtos.RegisterUserDto;
+import br.com.zup.taxes.dtos.RoleEnum;
 import br.com.zup.taxes.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;

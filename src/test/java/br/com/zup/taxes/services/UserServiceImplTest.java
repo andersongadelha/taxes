@@ -1,9 +1,9 @@
 package br.com.zup.taxes.services;
 
-import br.com.zup.taxes.controllers.dto.AuthResponseDto;
-import br.com.zup.taxes.controllers.dto.LoginDto;
-import br.com.zup.taxes.controllers.dto.RegisterUserDto;
-import br.com.zup.taxes.controllers.dto.ResponseRegisterUserDto;
+import br.com.zup.taxes.dtos.AuthResponseDto;
+import br.com.zup.taxes.dtos.LoginDto;
+import br.com.zup.taxes.dtos.RegisterUserDto;
+import br.com.zup.taxes.dtos.ResponseRegisterUserDto;
 import br.com.zup.taxes.exceptions.RegisteredUserException;
 import br.com.zup.taxes.infra.jwt.JwtTokenProvider;
 import br.com.zup.taxes.repositories.UserRepository;

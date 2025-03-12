@@ -1,6 +1,5 @@
-package br.com.zup.taxes.controllers.dto;
+package br.com.zup.taxes.dtos;
 
-import br.com.zup.taxes.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +11,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class TaxResponseDto {
     private Long id;
-    private String userName;
-    private String password;
-    private Role role;
+    private String name;
+    private String description;
+    private Double aliquot;
 }

@@ -1,6 +1,6 @@
 package br.com.zup.taxes.services;
 
-import br.com.zup.taxes.controllers.dto.UserDto;
+import br.com.zup.taxes.dtos.UserDto;
 import br.com.zup.taxes.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,7 +1,7 @@
 package br.com.zup.taxes.controllers;
 
-import br.com.zup.taxes.controllers.dto.TaxDto;
-import br.com.zup.taxes.controllers.dto.TaxResponseDto;
+import br.com.zup.taxes.dtos.TaxDto;
+import br.com.zup.taxes.dtos.TaxResponseDto;
 import br.com.zup.taxes.services.TaxService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
