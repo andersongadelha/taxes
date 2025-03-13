@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -234,4 +234,89 @@ class TaxControllerIT extends BaseIT {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
     }
+
+    @Test
+    public void shouldCalculateTaxSuccessfully_withAdminRole() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
+        Long taxId = id;
+
+        String requestBody = String.format("""
+        {
+            "taxId": %d,
+            "baseValue": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.taxName").value("Tax Name"))
+                .andExpect(jsonPath("$.baseValue").value(1000.0))
+                .andExpect(jsonPath("$.taxAmount").value(100.00))
+                .andExpect(jsonPath("$.aliquot").value(10.0));
+    }
+
+    @Test
+    public void shouldReturnForbidden_whenUserRoleTriesToCalculate() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUser", "ROLE_USER");
+        Long taxId = id;
+        String requestBody = String.format("""
+        {
+            "taxId": %d,
+            "baseValue": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenNoTokenProvided_forCalculate() throws Exception {
+        // Arrange
+        Long taxId = id;
+        String requestBody = String.format("""
+        {
+            "taxId": %d,
+            "baseValue": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenTokenIsInvalid_forCalculate() throws Exception {
+        // Arrange
+        Long taxId = id;
+        String invalidToken = jwtTestUtil.generateInvalidToken();
+        String requestBody = String.format("""
+        {
+            "taxId": %d,
+            "baseValue": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .header("Authorization", "Bearer " + invalidToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
+    }
+
 }

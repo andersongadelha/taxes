@@ -1,5 +1,7 @@
 package br.com.zup.taxes.services;
 
+import br.com.zup.taxes.dtos.CalculationRequestDto;
+import br.com.zup.taxes.dtos.CalculationResponseDto;
 import br.com.zup.taxes.dtos.TaxDto;
 import br.com.zup.taxes.dtos.TaxResponseDto;
 
@@ -10,4 +12,5 @@ public interface TaxService {
     List<TaxResponseDto> findAll();
     TaxResponseDto findById(Long id);
     void deleteById(Long id);
+    CalculationResponseDto calculate(CalculationRequestDto requestDto);
 }

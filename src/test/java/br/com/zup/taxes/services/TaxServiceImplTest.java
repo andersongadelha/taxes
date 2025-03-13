@@ -1,5 +1,7 @@
 package br.com.zup.taxes.services;
 
+import br.com.zup.taxes.dtos.CalculationRequestDto;
+import br.com.zup.taxes.dtos.CalculationResponseDto;
 import br.com.zup.taxes.dtos.TaxDto;
 import br.com.zup.taxes.dtos.TaxResponseDto;
 import br.com.zup.taxes.exceptions.TaxNotFoundException;
@@ -15,6 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @ExtendWith(value = MockitoExtension.class)
@@ -133,5 +136,36 @@ class TaxServiceImplTest {
 
         // Assert
         verify(taxRepository, times(1)).deleteById(taxId);
+    }
+
+    @Test
+    void shouldCalculateTaxSuccessfully() {
+        // Arrange
+        Long taxId = 1L;
+        BigDecimal baseValue = BigDecimal.valueOf(1000);
+        TaxResponseDto tax = TaxResponseDto.builder()
+                .id(1L)
+                .name("Tax")
+                .description("Description")
+                .aliquot(10.0)
+                .build();
+
+        CalculationRequestDto requestDto = CalculationRequestDto.builder()
+                .taxId(taxId)
+                .baseValue(baseValue)
+                .build();
+
+        when(taxRepository.findById(taxId)).thenReturn(tax);
+
+        // Act
+        CalculationResponseDto responseDto = taxService.calculate(requestDto);
+
+        // Assert
+        verify(taxRepository, times(1)).findById(taxId);
+        assertEquals(tax.getName(), responseDto.getTaxName());
+        assertEquals(BigDecimal.valueOf(100.0), responseDto.getTaxAmount());
+        assertEquals(requestDto.getBaseValue(), responseDto.getBaseValue());
+        assertEquals(tax.getAliquot(), responseDto.getAliquot());
+        assertEquals(requestDto.getBaseValue(), responseDto.getBaseValue());
     }
 }

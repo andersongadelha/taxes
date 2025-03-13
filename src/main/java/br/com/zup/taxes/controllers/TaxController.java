@@ -1,5 +1,7 @@
 package br.com.zup.taxes.controllers;
 
+import br.com.zup.taxes.dtos.CalculationRequestDto;
+import br.com.zup.taxes.dtos.CalculationResponseDto;
 import br.com.zup.taxes.dtos.TaxDto;
 import br.com.zup.taxes.dtos.TaxResponseDto;
 import br.com.zup.taxes.services.TaxService;
@@ -49,5 +51,11 @@ public class TaxController {
         taxService.deleteById(id);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/calculo")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<CalculationResponseDto> calculate(@RequestBody CalculationRequestDto requestDto) {
+        return ResponseEntity.ok(taxService.calculate(requestDto));
     }
 }
