@@ -59,6 +59,9 @@ public class TaxController {
     }
 
     @Operation(summary = "Endpoint para deletar um imposto por id na base. Acesso exclusivo para ADMIN.")
+    @ApiResponses(value = @ApiResponse(
+            responseCode = "204",
+            description = " Imposto deletado com sucesso."))
     @DeleteMapping("/tipos/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
