@@ -22,9 +22,9 @@ class UserControllerIT extends BaseIT {
     public void mustRegisterUserSuccessfully() throws Exception {
         String requestBody = """
                     {
-                        "userName": "test_userAdmin",
-                        "password": "12345",
-                        "role": "ROLE_ADMIN"
+                        "usuario": "test_userAdmin",
+                        "senha": "12345",
+                        "papel": "ROLE_ADMIN"
                     }
                 """;
         mockMvc.perform(post("/usuario/registrar")
@@ -39,9 +39,9 @@ class UserControllerIT extends BaseIT {
     public void shouldReturnBadRequest_userRegistered() throws Exception {
         String requestBody = """
                     {
-                        "userName": "testUserAdmin",
-                        "password": "12345",
-                        "role": "ROLE_ADMIN"
+                        "usuario": "testUserAdmin",
+                        "senha": "12345",
+                        "papel": "ROLE_ADMIN"
                     }
                 """;
         mockMvc.perform(post("/usuario/registrar")
@@ -56,9 +56,9 @@ class UserControllerIT extends BaseIT {
     public void shouldReturnBadRequest_roleNotFound() throws Exception {
         String requestBody = """
                     {
-                        "userName": "test_userAdmin",
-                        "password": "12345",
-                        "role": "ROLE_NEW"
+                        "usuario": "test_userAdmin",
+                        "senha": "12345",
+                        "papel": "ROLE_NEW"
                     }
                 """;
         mockMvc.perform(post("/usuario/registrar")
@@ -72,8 +72,8 @@ class UserControllerIT extends BaseIT {
     public void mustLoginSuccessfully() throws Exception {
         String requestBody = """
                     {
-                        "userName": "testUserAdmin",
-                        "password": "testPassword"
+                        "usuario": "testUserAdmin",
+                        "senha": "testPassword"
                     }
                 """;
         mockMvc.perform(post("/usuario/login")
@@ -87,8 +87,8 @@ class UserControllerIT extends BaseIT {
     public void shouldReturnUnathorized_BadCredentials() throws Exception {
         String requestBody = """
                     {
-                        "userName": "testUserAdmin",
-                        "password": "12345"
+                        "usuario": "testUserAdmin",
+                        "senha": "12345"
                     }
                 """;
         mockMvc.perform(post("/usuario/login")

@@ -12,7 +12,8 @@ O projeto está organizado nos seguintes pacotes:
 - **`br.com.zup.taxes.infra`**: Configurações gerais sobre infraestrutura da API.
 - **`br.com.zup.taxes.services`**: Contém a lógica de negócios da aplicação.
 - **`br.com.zup.taxes.repositories`**: Repositórios para acesso ao banco de dados.
-- **`br.com.zup.taxes.models`**: Modelos de dados utilizados na aplicação.
+- **`br.com.zup.taxes.models`**: Entidades utilizadas na aplicação.
+- **`br.com.zup.taxes.dtos`**: DTOs utilizados na aplicação.
 
 ## 🚀 Como Rodar o Projeto
 

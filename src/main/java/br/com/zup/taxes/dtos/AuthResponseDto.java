@@ -1,4 +1,4 @@
-package br.com.zup.taxes.controllers.dto;
+package br.com.zup.taxes.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

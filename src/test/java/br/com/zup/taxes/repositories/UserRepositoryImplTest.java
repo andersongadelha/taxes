@@ -1,9 +1,9 @@
 package br.com.zup.taxes.repositories;
 
-import br.com.zup.taxes.controllers.dto.RegisterUserDto;
-import br.com.zup.taxes.controllers.dto.ResponseRegisterUserDto;
-import br.com.zup.taxes.controllers.dto.RoleEnum;
-import br.com.zup.taxes.controllers.dto.UserDto;
+import br.com.zup.taxes.dtos.RegisterUserDto;
+import br.com.zup.taxes.dtos.ResponseRegisterUserDto;
+import br.com.zup.taxes.dtos.RoleEnum;
+import br.com.zup.taxes.dtos.UserDto;
 import br.com.zup.taxes.exceptions.RoleNotFoundException;
 import br.com.zup.taxes.models.Role;
 import br.com.zup.taxes.models.User;

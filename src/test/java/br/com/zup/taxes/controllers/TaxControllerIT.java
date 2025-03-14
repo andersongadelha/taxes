@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,9 +32,9 @@ class TaxControllerIT extends BaseIT {
         String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
         String requestBody = """
             {
-                "name": "Tax Name",
-                "description": "Tax Description",
-                "aliquot": 10.0
+                "nome": "Tax Name",
+                "descricao": "Tax Description",
+                "aliquota": 10.0
             }
             """;
 
@@ -56,9 +56,9 @@ class TaxControllerIT extends BaseIT {
         String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
         String requestBody = """
                 {
-                    "name": "Tax",
-                    "description": "Tax description for test",
-                    "aliquot": 15.0
+                    "nome": "Tax",
+                    "descricao": "Tax description for test",
+                    "aliquota": 15.0
                 }
                 """;
 
@@ -68,9 +68,9 @@ class TaxControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Tax"))
-                .andExpect(jsonPath("$.description").value("Tax description for test"))
-                .andExpect(jsonPath("$.aliquot").value(15.0));
+                .andExpect(jsonPath("$.nome").value("Tax"))
+                .andExpect(jsonPath("$.descricao").value("Tax description for test"))
+                .andExpect(jsonPath("$.aliquota").value(15.0));
     }
 
     @Test
@@ -79,9 +79,9 @@ class TaxControllerIT extends BaseIT {
         String token = jwtTestUtil.generateToken("testUser", "ROLE_USER");
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "nome": "Tax Name",
+                    "descricao": "Tax Description",
+                    "aliquota": 10.0
                 }
                 """;
 
@@ -98,9 +98,9 @@ class TaxControllerIT extends BaseIT {
         // Arrange
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "nome": "Tax Name",
+                    "descricao": "Tax Description",
+                    "aliquota": 10.0
                 }
                 """;
 
@@ -117,9 +117,9 @@ class TaxControllerIT extends BaseIT {
         String invalidToken = jwtTestUtil.generateInvalidToken();
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "nome": "Tax Name",
+                    "descricao": "Tax Description",
+                    "aliquota": 10.0
                 }
                 """;
 
@@ -157,9 +157,9 @@ class TaxControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Tax Name"))
-                .andExpect(jsonPath("$.description").value("Tax Description"))
-                .andExpect(jsonPath("$.aliquot").value(10.0));
+                .andExpect(jsonPath("$.nome").value("Tax Name"))
+                .andExpect(jsonPath("$.descricao").value("Tax Description"))
+                .andExpect(jsonPath("$.aliquota").value(10.0));
     }
 
     @Test
@@ -234,4 +234,89 @@ class TaxControllerIT extends BaseIT {
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
     }
+
+    @Test
+    public void shouldCalculateTaxSuccessfully_withAdminRole() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
+        Long taxId = id;
+
+        String requestBody = String.format("""
+        {
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.tipoImposto").value("Tax Name"))
+                .andExpect(jsonPath("$.valorBase").value(1000.0))
+                .andExpect(jsonPath("$.valorImposto").value(100.00))
+                .andExpect(jsonPath("$.aliquota").value(10.0));
+    }
+
+    @Test
+    public void shouldReturnForbidden_whenUserRoleTriesToCalculate() throws Exception {
+        // Arrange
+        String token = jwtTestUtil.generateToken("testUser", "ROLE_USER");
+        Long taxId = id;
+        String requestBody = String.format("""
+        {
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenNoTokenProvided_forCalculate() throws Exception {
+        // Arrange
+        Long taxId = id;
+        String requestBody = String.format("""
+        {
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void shouldReturnUnauthorized_whenTokenIsInvalid_forCalculate() throws Exception {
+        // Arrange
+        Long taxId = id;
+        String invalidToken = jwtTestUtil.generateInvalidToken();
+        String requestBody = String.format("""
+        {
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
+        }
+        """, taxId);
+
+        // Act & Assert
+        mockMvc.perform(post("/impostos/calculo")
+                        .header("Authorization", "Bearer " + invalidToken)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.mensagem").value("Credenciais inválidas."));
+    }
+
 }

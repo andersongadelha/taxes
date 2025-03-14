@@ -1,4 +1,4 @@
-package br.com.zup.taxes.controllers.dto;
+package br.com.zup.taxes.dtos;
 
 public enum RoleEnum {
     ROLE_ADMIN,
