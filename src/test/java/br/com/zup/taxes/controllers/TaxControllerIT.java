@@ -32,9 +32,9 @@ class TaxControllerIT extends BaseIT {
         String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
         String requestBody = """
             {
-                "name": "Tax Name",
-                "description": "Tax Description",
-                "aliquot": 10.0
+                "nome": "Tax Name",
+                "descricao": "Tax Description",
+                "aliquota": 10.0
             }
             """;
 
@@ -56,9 +56,9 @@ class TaxControllerIT extends BaseIT {
         String token = jwtTestUtil.generateToken("testUserAdmin", "ROLE_ADMIN");
         String requestBody = """
                 {
-                    "name": "Tax",
-                    "description": "Tax description for test",
-                    "aliquot": 15.0
+                    "nome": "Tax",
+                    "descricao": "Tax description for test",
+                    "aliquota": 15.0
                 }
                 """;
 
@@ -68,9 +68,9 @@ class TaxControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("Tax"))
-                .andExpect(jsonPath("$.description").value("Tax description for test"))
-                .andExpect(jsonPath("$.aliquot").value(15.0));
+                .andExpect(jsonPath("$.nome").value("Tax"))
+                .andExpect(jsonPath("$.descricao").value("Tax description for test"))
+                .andExpect(jsonPath("$.aliquota").value(15.0));
     }
 
     @Test
@@ -79,9 +79,9 @@ class TaxControllerIT extends BaseIT {
         String token = jwtTestUtil.generateToken("testUser", "ROLE_USER");
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "nome": "Tax Name",
+                    "descricao": "Tax Description",
+                    "aliquota": 10.0
                 }
                 """;
 
@@ -98,9 +98,9 @@ class TaxControllerIT extends BaseIT {
         // Arrange
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "nome": "Tax Name",
+                    "descricao": "Tax Description",
+                    "aliquota": 10.0
                 }
                 """;
 
@@ -117,9 +117,9 @@ class TaxControllerIT extends BaseIT {
         String invalidToken = jwtTestUtil.generateInvalidToken();
         String requestBody = """
                 {
-                    "name": "Tax Name",
-                    "description": "Tax Description",
-                    "aliquot": 10.0
+                    "nome": "Tax Name",
+                    "descricao": "Tax Description",
+                    "aliquota": 10.0
                 }
                 """;
 
@@ -157,9 +157,9 @@ class TaxControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value("Tax Name"))
-                .andExpect(jsonPath("$.description").value("Tax Description"))
-                .andExpect(jsonPath("$.aliquot").value(10.0));
+                .andExpect(jsonPath("$.nome").value("Tax Name"))
+                .andExpect(jsonPath("$.descricao").value("Tax Description"))
+                .andExpect(jsonPath("$.aliquota").value(10.0));
     }
 
     @Test
@@ -243,8 +243,8 @@ class TaxControllerIT extends BaseIT {
 
         String requestBody = String.format("""
         {
-            "taxId": %d,
-            "baseValue": 1000.0
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
         }
         """, taxId);
 
@@ -254,10 +254,10 @@ class TaxControllerIT extends BaseIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.taxName").value("Tax Name"))
-                .andExpect(jsonPath("$.baseValue").value(1000.0))
-                .andExpect(jsonPath("$.taxAmount").value(100.00))
-                .andExpect(jsonPath("$.aliquot").value(10.0));
+                .andExpect(jsonPath("$.tipoImposto").value("Tax Name"))
+                .andExpect(jsonPath("$.valorBase").value(1000.0))
+                .andExpect(jsonPath("$.valorImposto").value(100.00))
+                .andExpect(jsonPath("$.aliquota").value(10.0));
     }
 
     @Test
@@ -267,8 +267,8 @@ class TaxControllerIT extends BaseIT {
         Long taxId = id;
         String requestBody = String.format("""
         {
-            "taxId": %d,
-            "baseValue": 1000.0
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
         }
         """, taxId);
 
@@ -286,8 +286,8 @@ class TaxControllerIT extends BaseIT {
         Long taxId = id;
         String requestBody = String.format("""
         {
-            "taxId": %d,
-            "baseValue": 1000.0
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
         }
         """, taxId);
 
@@ -305,8 +305,8 @@ class TaxControllerIT extends BaseIT {
         String invalidToken = jwtTestUtil.generateInvalidToken();
         String requestBody = String.format("""
         {
-            "taxId": %d,
-            "baseValue": 1000.0
+            "tipoImpostoId": %d,
+            "valorBase": 1000.0
         }
         """, taxId);
 
