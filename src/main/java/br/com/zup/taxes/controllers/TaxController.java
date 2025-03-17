@@ -71,6 +71,7 @@ public class TaxController {
     }
 
     @PostMapping("/calculo")
+    @Operation(summary = "Endpoint para calcular imposto. Acesso exclusivo para ADMIN.")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CalculationResponseDto> calculate(@RequestBody CalculationRequestDto requestDto) {
         return ResponseEntity.ok(taxService.calculate(requestDto));
