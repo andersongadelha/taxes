@@ -1,6 +1,6 @@
 package br.com.zup.taxes.services;
 
-import br.com.zup.taxes.controllers.dto.RoleEnum;
+import br.com.zup.taxes.dtos.RoleEnum;
 import br.com.zup.taxes.repositories.RoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

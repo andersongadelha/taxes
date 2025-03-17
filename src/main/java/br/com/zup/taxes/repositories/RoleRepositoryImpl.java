@@ -1,6 +1,6 @@
 package br.com.zup.taxes.repositories;
 
-import br.com.zup.taxes.controllers.dto.RoleEnum;
+import br.com.zup.taxes.dtos.RoleEnum;
 import br.com.zup.taxes.models.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

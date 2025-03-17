@@ -1,6 +1,6 @@
-package br.com.zup.taxes.controllers.dto;
+package br.com.zup.taxes.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import br.com.zup.taxes.models.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,10 +12,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResponseRegisterUserDto {
+public class UserDto {
     private Long id;
-    @JsonProperty(value = "usuario")
     private String userName;
-    @JsonProperty(value = "papel")
-    private RoleEnum role;
+    private String password;
+    private Role role;
 }

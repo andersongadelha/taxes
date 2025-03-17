@@ -1,11 +1,14 @@
 package br.com.zup.taxes.services;
 
-import br.com.zup.taxes.controllers.dto.TaxDto;
-import br.com.zup.taxes.controllers.dto.TaxResponseDto;
+import br.com.zup.taxes.dtos.CalculationRequestDto;
+import br.com.zup.taxes.dtos.CalculationResponseDto;
+import br.com.zup.taxes.dtos.TaxDto;
+import br.com.zup.taxes.dtos.TaxResponseDto;
 import br.com.zup.taxes.repositories.TaxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -32,5 +35,18 @@ public class TaxServiceImpl implements TaxService {
     @Override
     public void deleteById(Long id) {
         taxRepository.deleteById(id);
+    }
+
+    @Override
+    public CalculationResponseDto calculate(CalculationRequestDto requestDto) {
+        TaxResponseDto taxDto = taxRepository.findById(requestDto.getTaxId());
+        BigDecimal result = requestDto.getBaseValue().multiply(BigDecimal.valueOf(taxDto.getAliquot() / 100));
+
+        return CalculationResponseDto.builder()
+                .taxName(taxDto.getName())
+                .taxAmount(result)
+                .baseValue(requestDto.getBaseValue())
+                .aliquot(taxDto.getAliquot())
+                .build();
     }
 }
