@@ -2,7 +2,7 @@ spring:
   application:
     name: taxes
   datasource:
-    url: ${DB_URL:jdbc:postgresql://postgres-db:5432/taxes}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/taxes}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:admin123}
     driver-class-name: org.postgresql.Driver
