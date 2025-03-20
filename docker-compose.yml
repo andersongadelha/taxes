@@ -5,8 +5,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/taxes
     depends_on:
       - postgres-db
     restart: on-failure
