@@ -65,3 +65,12 @@ jobs:
         uses: madrapps/jacoco-report@v1.7.1
         with:
           path: target/site/jacoco-merged-test-coverage-report
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+          update-comment: false
+          skip-if-no-changes: false
+          pass-emoji: ":green_apple:"
+          fail-emoji: ":x:"
+          continue-on-error: true
+          debug-mode: false
