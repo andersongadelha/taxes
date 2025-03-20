@@ -64,7 +64,7 @@ jobs:
       - name: Publish JaCoCo Report
         uses: madrapps/jacoco-report@v1.7.1
         with:
-          path: target/site/jacoco-merged-test-coverage-report
+          path: target/site/jacoco-merged-test-coverage-report/jacoco.xml
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 80
           min-coverage-changed-files: 80
