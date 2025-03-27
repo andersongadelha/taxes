@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "stackSpotIntegration", url = "https://genai-code-buddy-api.stackspot.com/v1/quick-commands")
+@FeignClient(
+        name = "stackSpotIntegration",
+        url = "https://genai-code-buddy-api.stackspot.com/v1/quick-commands",
+        configuration = FeignConfig.class
+)
 public interface StackSpotClient {
 
     @PostMapping("/create-execution/draft-test-bot")
