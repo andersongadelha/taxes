@@ -10,3 +10,6 @@ spring:
     hibernate:
       ddl-auto: update
       dialect: org.hibernate.dialect.PostgreSQLDialect
+stackspot:
+  client-id: ${STACKSPOT_CLIENT_ID}
+  client-secret: ${STACKSPOT_CLIENT_SECRET}
