@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # Permite rodar manualmente a pipeline
+  workflow_dispatch:
 
 jobs:
   build:
@@ -30,18 +30,15 @@ jobs:
           --health-timeout=5s
           --health-retries=5
     steps:
-      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Configuração do Java
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Cache do Maven para acelerar builds
       - name: Cache Maven dependencies
         uses: actions/cache@v3
         with:
@@ -50,7 +47,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-m2
 
-      # Esperar o banco de dados estar pronto
+      - name: Set environment variables
+        run: |
+          echo "STACKSPOT_CLIENT_ID=${{ secrets.STACKSPOT_CLIENT_ID }}" >> $GITHUB_ENV
+          echo "STACKSPOT_CLIENT_SECRET=${{ secrets.STACKSPOT_CLIENT_SECRET }}" >> $GITHUB_ENV
+
       - name: Wait for Postgres
         run: |
           for i in {1..10}; do
@@ -60,7 +61,6 @@ jobs:
           done
           echo "Postgres failed to start" && exit 1
 
-      # Rodar o Maven para verificar e gerar o relatório de cobertura
       - name: Run tests and generate coverage report
         run: mvn clean verify
 
